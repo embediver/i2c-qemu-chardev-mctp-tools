@@ -1,0 +1,10 @@
+[package]
+name = "i2c-qemu-chardev-mctp-tools"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+mctp-lib = { git = "https://github.com/9elements/mctp-lib.git", branch = "mgudel/i2c-qemu-chardev" }
+mctp-std = { git = "https://github.com/9elements/mctp-lib.git", branch = "mgudel/i2c-qemu-chardev",  package = "standalone" }
+mctp = { git = "https://github.com/OpenPRoT/mctp-rs.git", branch = "fix/mctp-estack-i2c" }
+zerocopy = "0.8"
