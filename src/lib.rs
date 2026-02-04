@@ -123,25 +123,42 @@ impl QemuI2cTransportReceiver {
             assert_eq!(
                 header.version,
                 QemuI2cChardevHeader::VERSION,
-                "Invalid VERSION for qemu chardev header ({:02x?})",
+                "Invalid VERSION for qemu chardev header ({:#02x})",
                 header.version
             );
 
             let mut i2c_pkt = vec![0; header.len as usize];
             self.socket.read_exact(&mut i2c_pkt).unwrap();
 
+            if header.dst_addr != self.own_addr {
+                // Discard packet if header address does not match
+                println!(
+                    "[WARN] Discarding packet with wrong destination addr ({:#02x})",
+                    header.dst_addr
+                );
+                continue;
+            }
+
             // Successfully received a packet over the qemu i2c chardev socket.
             // Further decoding errors will just be printed instead of crashing the application.
 
             let codec = MctpI2cEncap::new(self.own_addr);
 
-            let (pkt, _header) = match codec.decode(&i2c_pkt, self.pec) {
+            let (pkt, header) = match codec.decode(&i2c_pkt, self.pec) {
                 Ok(ret) => ret,
                 Err(e) => {
                     println!("[ERROR] decoding I2C packet: {e:?}");
                     continue;
                 }
             };
+            if header.dest != self.own_addr {
+                // Discard packet if header address does not match
+                println!(
+                    "[ERROR] chardev header destination does not match I2C transport destination ({:#02x}), discarding",
+                    header.dest
+                );
+                continue;
+            }
 
             self.stack
                 .inbound(pkt)

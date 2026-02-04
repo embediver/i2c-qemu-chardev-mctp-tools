@@ -8,8 +8,8 @@ use i2c_qemu_chardev_mctp_tools::{QemuI2cTransportReceiver, QemuI2cTransportSend
 // Compile time defaults
 
 const UNIX_SOCKET_DEFAULT: &str = "vi2c_bus.sock"; // Set `UNIX_SOCKET` env variable to overwrite at runtime
-const OWN_ADDR: u8 = 0x20;
-const NEIGH_ADDR: u8 = 0x10;
+const OWN_ADDR: u8 = 0x10;
+const NEIGH_ADDR: u8 = 0x20;
 // `PEC` is off by default, set env variable (`PEC`) to enable
 const OWN_EID: Eid = Eid(9);
 const REMOTE_EID: Eid = Eid(8);
@@ -18,6 +18,9 @@ const TIMEOUT_SECS: u64 = 10;
 
 fn main() {
     let pec = var("PEC").is_ok();
+    if pec {
+        println!("[INFO] PEC = true");
+    }
 
     let sock_addr = var("UNIX_SOCKET").unwrap_or(UNIX_SOCKET_DEFAULT.to_owned());
     let socket = UnixStream::connect(sock_addr).expect("error opening socket");

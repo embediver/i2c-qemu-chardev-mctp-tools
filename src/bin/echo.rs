@@ -27,6 +27,9 @@ static IS_SERVER: OnceLock<bool> = OnceLock::new();
 
 fn main() {
     let pec = var("PEC").is_ok();
+    if pec {
+        println!("[INFO] PEC = true");
+    }
 
     let socket = open_socket();
 
