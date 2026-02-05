@@ -11,8 +11,8 @@ const UNIX_SOCKET_DEFAULT: &str = "vi2c_bus.sock"; // Set `UNIX_SOCKET` env vari
 const OWN_ADDR: u8 = 0x10;
 const NEIGH_ADDR: u8 = 0x20;
 // `PEC` is off by default, set env variable (`PEC`) to enable
-const OWN_EID: Eid = Eid(9);
-const REMOTE_EID: Eid = Eid(8);
+const OWN_EID: Eid = Eid(8);
+const REMOTE_EID: Eid = Eid(9);
 const MSG_TYPE: MsgType = MsgType(1);
 const TIMEOUT_SECS: u64 = 10;
 

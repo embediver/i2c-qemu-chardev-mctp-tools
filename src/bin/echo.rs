@@ -19,7 +19,7 @@ const SERVER: bool = true;
 const OWN_ADDR: u8 = 0x20;
 const NEIGH_ADDR: u8 = 0x10;
 // `PEC` is off by default, set env variable (`PEC`) to enable
-const OWN_EID: Eid = Eid(8);
+const OWN_EID: Eid = Eid(9);
 const MSG_TYPE: MsgType = MsgType(1);
 const TIMEOUT_SECS: u64 = 10;
 
